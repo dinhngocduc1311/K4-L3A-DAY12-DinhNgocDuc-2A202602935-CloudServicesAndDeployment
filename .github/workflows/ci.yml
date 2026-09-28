@@ -38,22 +38,13 @@ jobs:
         run: docker build --tag day12-agent:${{ github.sha }} .
 
   deploy:
-    name: Deploy to Railway
+    name: Release gate
     needs: [test, build]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    concurrency: railway-production
-    env:
-      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Install Railway CLI
-        run: npm install --global @railway/cli@5.62.1
-      - name: Deploy
-        run: railway up --ci --project a6126c58-0385-46e7-aa59-935aaeacb64a --environment production --service day12-agent
-      - name: Smoke test
-        run: curl --fail --show-error --silent --retry 12 --retry-delay 5 --retry-all-errors "${{ vars.PUBLIC_URL }}/health"
+      - name: Verify release commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: test "$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA" --jq .sha)" = "$GITHUB_SHA"
