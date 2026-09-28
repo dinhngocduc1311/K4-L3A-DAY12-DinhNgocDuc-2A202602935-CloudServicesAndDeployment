@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   smoke-test:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'production'
+    if: github.event.deployment_status.state == 'success' && endsWith(github.event.deployment.environment, ' / production') && github.event.deployment.creator.login == 'railway-app[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
