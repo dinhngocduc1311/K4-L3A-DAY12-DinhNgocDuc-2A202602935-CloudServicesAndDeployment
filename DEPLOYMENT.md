@@ -35,7 +35,7 @@ Chỉ tên và nguồn cấu hình được ghi lại; giá trị secret không 
 | Kiểm tra | HTTP | Kết quả |
 |----------|------|---------|
 | `GET /health` | 200 | `{"status":"ok","service":"day12-agent","version":"1.0.0"}` |
-| Railway platform healthcheck | `/health` | Đã áp dụng; deployment `472c54f7-0b6f-4afc-887f-7958d9b86c29` `SUCCESS` |
+| Railway platform healthcheck | `/health` | Đã áp dụng; deployment `66f7406d-aafa-4fc4-ba82-8588e2ac9242` `SUCCESS`, commit `0679d64` |
 | `GET /ready` | 200 | `{"status":"ready","redis":true}` |
 | `POST /ask` không có API key | 401 | `{"detail":"invalid or missing API key"}` |
 | `POST /ask` có API key | 200 | Trả về câu trả lời và ghi history vào Redis |
